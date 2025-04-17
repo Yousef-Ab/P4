@@ -1,0 +1,142 @@
+/* DEVELOPER: Yousef Aboushaar, IS117-002, Spring 2025 */
+
+@font-face {
+  font-family: 'Milchella';
+  src: url('../fonts/Milchella-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* Background */
+body {
+  background-color: #fffee8;
+}
+
+/* Navigation */
+.navbar-nav .nav-link,
+.navbar-brand {
+  font-family: 'Milchella', serif;
+  font-size: 1rem;
+}
+
+.navbar-dark.bg-dark {
+  background-color: #801010 /*#3B2F2F*/ !important;
+}
+
+/* Header */
+header {
+  background-color: #801010 !important;
+  color: white;
+}
+
+header h1 {
+  font-family: 'Pinyon Script', cursive;
+  font-size: 3rem;
+  font-weight: normal;
+}
+
+/* Card Frame */
+.frame-container {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #fffee8;
+}
+
+/* Book Image inside the Frame */
+.book-image {
+  width: 50%;
+  height: 50%;
+  object-fit: contain;
+  z-index: 1;
+  position: relative;
+  background-color: white;
+}
+
+/* Frame Overlay */
+.frame-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* Card */
+.gallery-card {
+  border: none;
+  background-color: #fffee8;
+  transition: transform 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.gallery-card .card-body {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.gallery-card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.5);
+}
+
+/* Fonts */
+h1, h5.card-title {
+  font-family: 'Pinyon Script', cursive;
+}
+
+.card-text {
+  font-family: 'Milchella', serif;
+  font-size: 1rem;
+}
+
+/* Button */
+.btn {
+  background-color: #3B2F2F;
+  border: none;
+  color: #ffffff;
+  font-family: 'Milchella', serif;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn:hover {
+  background-color: #ff0000;
+  transform: scale(1.05);
+}
+
+/* Footer */
+.custom-footer {
+  background-color: #801010;
+  color: #f5f5f5;
+  font-family: 'Georgia', serif;
+  font-size: 0.9rem;
+}
+
+.custom-footer a {
+  color: #f0dca0;
+  text-decoration: underline;
+}
+
+.custom-footer a:hover {
+  color: #ffe699;
+  text-decoration: none;
+}
+
+
+
