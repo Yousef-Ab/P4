@@ -1,0 +1,168 @@
+<!-- DEVELOPER: Yousef Aboushaar, IS117-002, Spring 2025 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Add a New Book</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="index.html">My Library</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Book Lists</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="tbr-list.html">TBR List</a></li>
+              <li><a class="dropdown-item" href="read-list.html">Read List</a></li>
+              <li><a class="dropdown-item" href="full-collection.html">Full Collection</a></li>
+            </ul>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="recommend.html">Recommend a Book</a></li>
+          <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Header -->
+  <header class="text-white text-center py-5">
+    <div class="container">
+      <h1>Add a New Book</h1>
+      <p class="lead">Enter the book details below</p>
+    </div>
+  </header>
+
+  <!-- Form Section -->
+  <section class="container my-5">
+    <form id="addBookForm">
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="title" class="form-label">Book Title</label>
+            <input type="text" class="form-control" id="title" required>
+          </div>
+          <div class="col-md-6">
+            <label for="author" class="form-label">Author</label>
+            <input type="text" class="form-control" id="author" required>
+          </div>
+        </div>
+      
+        <div class="row mb-3">
+          <div class="col-md-4">
+            <label for="genre" class="form-label">Genre</label>
+            <input type="text" class="form-control" id="genre" required>
+          </div>
+          <div class="col-md-4">
+            <label for="rating" class="form-label">Rating</label>
+            <select class="form-select" id="rating" optional>
+              <option disabled selected value="">Choose rating</option>
+              <option>1</option><option>1.5</option><option>2</option><option>2.5</option>
+              <option>3</option><option>3.5</option><option>4</option><option>4.5</option><option>5</option>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label d-block">Save Book To:</label>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="bookCollection" id="fullCollectionCheck">
+              <label class="form-check-label" for="fullCollectionCheck">Full Collection</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="tbrList" id="tbrListCheck">
+              <label class="form-check-label" for="tbrListCheck">TBR List</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="readList" id="readListCheck">
+              <label class="form-check-label" for="readListCheck">Read List</label>
+            </div>
+          </div>
+        </div>
+      
+        <div class="mb-3">
+          <label for="cover" class="form-label">Upload Book Cover</label>
+          <input type="file" class="form-control" id="cover" accept="image/*">
+        </div>
+      
+        <button type="submit" class="btn btn-success">Add Book</button>
+      </form>      
+  </section>
+
+  <!-- Footer -->
+  <footer class="custom-footer text-center py-3">
+    <div class="container">
+      <p class="mb-1">© 2025 Yousef Aboushaar. All rights reserved.</p>
+      <p class="mb-0"><a href="#" class="text-white text-decoration-underline">Terms of Use</a></p>
+    </div>
+  </footer>
+
+  <!-- Save to Local Storage -->
+  <script>
+    document.getElementById('addBookForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+  
+      const title = document.getElementById('title').value;
+      const author = document.getElementById('author').value;
+      const genre = document.getElementById('genre').value;
+      const rating = document.getElementById('rating').value || "N/A";
+      const file = document.getElementById('cover').files[0];
+  
+      // Gather selected lists
+      const selectedLists = [];
+      if (document.getElementById('fullCollectionCheck').checked) selectedLists.push('bookCollection');
+      if (document.getElementById('tbrListCheck').checked) selectedLists.push('tbrList');
+      if (document.getElementById('readListCheck').checked) selectedLists.push('readList');
+  
+      if (selectedLists.length === 0) {
+        alert("Please select at least one list to save the book.");
+        return;
+      }
+  
+      const saveBookToLists = (imageBase64) => {
+        const book = {
+          title,
+          author,
+          genre,
+          rating,
+          image: imageBase64 || 'images/book-placeholder.jpg'
+        };
+  
+        selectedLists.forEach(listKey => {
+          const existing = JSON.parse(localStorage.getItem(listKey)) || [];
+          existing.push(book);
+          localStorage.setItem(listKey, JSON.stringify(existing));
+        });
+  
+        if (selectedLists.includes('bookCollection')) {
+          window.location.href = 'full-collection.html';
+        } else if (selectedLists.includes('tbrList')) {
+          window.location.href = 'tbr-list.html';
+        } else {
+          window.location.href = 'read-list.html';
+        }
+      };
+  
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (event) {
+          saveBookToLists(event.target.result);
+        };
+        reader.readAsDataURL(file);
+      } else {
+        saveBookToLists(null);
+      }
+    });
+  </script>
+  
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
