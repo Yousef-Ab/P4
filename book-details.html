@@ -6,25 +6,52 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Book Details</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
 </head>
-<body>
+<body class="d-flex flex-column min-vh-100">
+
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
     <div class="container-fluid">
       <a class="navbar-brand" href="index.html">My Library</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle active" href="#" role="button" data-bs-toggle="dropdown">Book Lists</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="tbr-list.html">TBR List</a></li>
+              <li><a class="dropdown-item" href="read-list.html">Read List</a></li>
+              <li><a class="dropdown-item" href="full-collection.html">Full Collection</a></li>
+            </ul>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="recommend.html">Recommend a Book</a></li>
+          <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+        </ul>
+      </div>
     </div>
   </nav>
 
-  <div class="container my-5" id="detailsContainer">
-  </div>
+  <!-- Main Book Details Section -->
+  <div class="container my-5" id="detailsContainer"></div>
 
-  <!-- Bootstrap JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Footer -->
+  <footer class="custom-footer text-center py-3 mt-auto">
+    <div class="container">
+      <p class="mb-1">© 2025 Yousef Aboushaar. All rights reserved.</p>
+      <p class="mb-0"><a href="#" class="text-white text-decoration-underline">Terms of Use</a></p>
+    </div>
+  </footer>
 
+  <!-- Load Book Details -->
   <script>
     const params = new URLSearchParams(window.location.search);
     const index = parseInt(params.get("index"));
-    const list = params.get("list") || "bookCollection"; // default fallback
+    const list = params.get("list") || "bookCollection";
 
     const collection = JSON.parse(localStorage.getItem(list)) || [];
     const book = collection[index];
@@ -33,54 +60,40 @@
       document.getElementById("detailsContainer").innerHTML = "<p class='text-danger'>Book not found.</p>";
     } else {
       document.getElementById("detailsContainer").innerHTML = `
-        <div class="row">
-          <div class="col-md-4">
-            <img src="${book.image}" class="img-fluid rounded" alt="${book.title}" />
-          </div>
-          <div class="col-md-8">
-            <h2>${book.title}</h2>
-            <p><strong>Author:</strong> ${book.author}</p>
-            <p><strong>Genre:</strong> ${book.genre}</p>
-            <p><strong>Rating:</strong> ${book.rating}</p>
-            <div class="mt-4">
-              <a href="edit-book.html?index=${index}" class="btn btn-primary me-2">Edit Details</a>
-              <button class="btn btn-danger" onclick="deleteBook()">Delete Book</button>
+        <div class="card shadow-lg">
+          <div class="row g-0">
+            <div class="col-md-4">
+              <img src="${book.image}" class="img-fluid rounded-start" alt="${book.title}" />
+            </div>
+            <div class="col-md-8">
+              <div class="card-body">
+                <h2 class="card-title">${book.title}</h2>
+                <p class="card-text"><strong>Author:</strong> ${book.author}</p>
+                <p class="card-text"><strong>Genre:</strong> ${book.genre}</p>
+                <p class="card-text"><strong>Rating:</strong> ${book.rating}</p>
+                <div class="mt-4">
+                  <a href="edit-book.html?index=${index}&list=${list}" class="btn btn-primary me-2">Edit Details</a>
+                  <button class="btn btn-danger" onclick="deleteBook()">Delete Book</button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       `;
     }
 
-function deleteBook() {
-    if (confirm("Are you sure you want to delete this book?")) {
+    function deleteBook() {
+      if (confirm("Are you sure you want to delete this book?")) {
         collection.splice(index, 1);
         localStorage.setItem(list, JSON.stringify(collection));
         if (list === "tbrList") window.location.href = "tbr-list.html";
         else if (list === "readList") window.location.href = "read-list.html";
         else window.location.href = "full-collection.html";
-    }
-}
-
-
-    function editBook() {
-      const newTitle = prompt("Edit Title:", book.title);
-      const newAuthor = prompt("Edit Author:", book.author);
-      const newGenre = prompt("Edit Genre:", book.genre);
-      const newRating = prompt("Edit Rating:", book.rating);
-
-      if (newTitle && newAuthor && newGenre && newRating) {
-        collection[index] = {
-          ...book,
-          title: newTitle,
-          author: newAuthor,
-          genre: newGenre,
-          rating: newRating,
-          image: book.image
-        };
-        localStorage.setItem("bookCollection", JSON.stringify(collection));
-        location.reload();
       }
     }
   </script>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
